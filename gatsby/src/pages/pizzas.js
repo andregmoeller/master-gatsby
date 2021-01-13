@@ -1,11 +1,12 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import PizzaList from '../components/PizzaList';
 
 export default function PizzasPage({ data }) {
   const pizzas = data.pizzas.nodes;
   return (
     <>
-      <p>Hey! There are {pizzas.length} Pizzas!</p>
+      <PizzaList pizzas={pizzas} />
     </>
   );
 }
