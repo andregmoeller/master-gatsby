@@ -15,12 +15,12 @@ const ToppingsStyles = styled.div`
     padding: 5px;
     background: var(--grey);
     border-radius: 2px;
+    &[aria-current='page'] {
+      background: var(--yellow);
+    }
     .count {
       background: white;
       padding: 2px 5px;
-    }
-    .active {
-      background: var(--yellow);
     }
   }
 `;
@@ -62,9 +62,12 @@ export default function ToppingsFilter() {
     }
   `);
   const toppingsWithCounts = countPizzaInToppings(pizzas.nodes);
-
   return (
     <ToppingsStyles>
+      <Link to="/pizzas">
+        <span className="name">All</span>
+        <span className="count">{pizzas.nodes.length}</span>
+      </Link>
       {toppingsWithCounts.map((topping) => (
         <Link key={topping.id} to={`/topping/${topping.name}`}>
           <span className="name">{topping.name}</span>

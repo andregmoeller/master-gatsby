@@ -26,7 +26,32 @@ async function turnPizzasIntoPages({ graphql, actions }) {
   });
 }
 
+async function turnToppingsIntoPages({ graphql, actions }) {
+  const toppingTemplate = path.resolve('./src/pages/pizzas.js');
+  const { data } = await graphql(`
+    query {
+      toppings: allSanityTopping {
+        nodes {
+          name
+          id
+        }
+      }
+    }
+  `);
+  data.toppings.nodes.forEach((topping) => {
+    actions.createPage({
+      // What is the URL for this new page?
+      path: `topping/${topping.name}`,
+      component: toppingTemplate,
+      context: {
+        topping: topping.name,
+        toppingRegex: `/${topping.name}/i`,
+      },
+    });
+  });
+}
+
 export async function createPages(param) {
   // Create pages dynamically
-  await turnPizzasIntoPages(param);
+  await Promise.all([turnPizzasIntoPages(param), turnToppingsIntoPages(param)]);
 }
